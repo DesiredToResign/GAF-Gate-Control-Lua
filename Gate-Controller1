@@ -1,0 +1,75 @@
+--MADE BY DESIREDTORESIGN 2024
+
+local gate = script.Parent.Parent.Parent.Union
+local TweenService = game:GetService("TweenService")
+local Up = script.Parent.Parent.Parent.Up
+local Down = script.Parent.Parent.Parent.Down
+local sound = script.Parent.Parent.Parent.Union.Open
+local teams = {
+	"Lily white",
+	"Cool yellow",
+	"Forest green",
+	"Burnt Sienna",
+	"Maroon",
+	"Medium stone grey"
+}
+local toggle1 = script.Parent.Parent.Parent.StuffToggle
+local toggle = true
+
+local TI = TweenInfo.new(
+	7,
+	Enum.EasingStyle.Linear,
+	Enum.EasingDirection.Out,
+	0,
+	false,
+	0
+)
+
+local open = {Position = Vector3.new(-505.951, 3.578, -172.082)}
+local close = {Position = Vector3.new(-505.831, -16.222, -172.405)}
+
+local openA = TweenService:Create(gate,TI,open)
+local closeA = TweenService:Create(gate,TI,close)
+
+function CheckTeam(plr)
+	for _, authTeam in teams do
+		if plr.TeamColor == BrickColor.new(authTeam) then
+			return false
+		end
+	end
+	return true
+end
+
+function go(plr)
+	if CheckTeam(plr) == false then
+		print("no")
+		script.Parent.Parent.nope:Play()
+	elseif CheckTeam(plr) == true then
+		print("mouseclick")
+		if toggle == true then
+			print("gateopen")
+			Down.Transparency = 1
+			Up.Transparency = 0
+			script.Parent.Parent.Lever:Play()
+			sound:Play()
+			openA:Play()
+			toggle = false
+			toggle1.Value = true
+			wait(7)
+			toggle1.Value = false
+		elseif toggle == false then
+			print("gateclose")
+			Down.Transparency = 0
+			Up.Transparency = 1
+			script.Parent.Parent.Lever:Play()
+			sound:Play()
+			closeA:Play()
+			toggle = true
+			toggle1.Value = true
+			wait(7)
+			toggle1.Value = false
+		end
+	end
+end
+script.Parent.MouseClick:Connect(go)
+
